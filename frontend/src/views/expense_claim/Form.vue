@@ -483,6 +483,6 @@ function setExchangeRate() {
 		from_currency: expenseClaim.value.currency,
 		to_currency: companyCurrency.value,
 	})
-	if (exchange_rate_field) exchange_rate_field.hidden = 0
+	if (exchange_rate_field) exchange_rate_field.hidden = 1
 }
 </script>
