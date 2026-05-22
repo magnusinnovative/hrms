@@ -92,6 +92,7 @@ def get_hr_settings() -> dict:
 	return frappe._dict(
 		allow_employee_checkin_from_mobile_app=settings.allow_employee_checkin_from_mobile_app,
 		allow_geolocation_tracking=settings.allow_geolocation_tracking,
+		prevent_self_leave_approval=settings.prevent_self_leave_approval,
 	)
 
 
@@ -723,7 +724,9 @@ def get_attachments(dt: str, dn: str):
 
 
 @frappe.whitelist()
-def upload_base64_file(content, filename, dt=None, dn=None, fieldname=None):
+def upload_base64_file(
+	content: str, filename: str, dt: str | None = None, dn: str | None = None, fieldname: str | None = None
+):
 	import base64
 	import io
 	from mimetypes import guess_type
