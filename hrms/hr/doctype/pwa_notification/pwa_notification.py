@@ -1,5 +1,6 @@
 # Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
+
 import frappe
 from frappe.model.document import Document
 
@@ -35,9 +36,15 @@ class PWANotification(Document):
 	def get_notification_link(self):
 		base_url = f"{frappe.utils.get_url()}/hrms"
 
-		if self.reference_document_type == "Leave Application":
-			return f"{base_url}/leave-applications/{self.reference_document_name}"
-		elif self.reference_document_type == "Expense Claim":
-			return f"{base_url}/expense-claims/{self.reference_document_name}"
+		route_map = {
+			"Leave Application": "leave-applications",
+			"Expense Claim": "expense-claims",
+			"Attendance Request": "attendance-requests",
+			"Employee Advance": "employee-advances",
+		}
+
+		path = route_map.get(self.reference_document_type)
+		if path:
+			return f"{base_url}/{path}/{self.reference_document_name}"
 
 		return base_url

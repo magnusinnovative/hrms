@@ -11,13 +11,14 @@ from erpnext.setup.doctype.employee.employee import is_holiday
 
 import hrms
 from hrms.hr.utils import validate_active_employee, validate_dates
+from hrms.mixins.pwa_notifications import PWANotificationsMixin
 
 
 class OverlappingAttendanceRequestError(frappe.ValidationError):
 	pass
 
 
-class AttendanceRequest(Document):
+class AttendanceRequest(PWANotificationsMixin, Document):
 	def validate(self):
 		validate_active_employee(self.employee)
 		validate_dates(self, self.from_date, self.to_date, False)
@@ -236,8 +237,12 @@ class AttendanceRequest(Document):
 			return True
 		return False
 
+	def after_insert(self):
+		self.notify_approver()
+
 	def on_update(self):
 		self.publish_update()
+		self.notify_approval_status()
 
 	def after_delete(self):
 		self.publish_update()
