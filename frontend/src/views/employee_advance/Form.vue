@@ -51,11 +51,73 @@ const formFields = createResource({
 })
 formFields.reload()
 
-useCurrencyConversion(
-	formFields,
-	employeeAdvance,
-	["paid_amount"]
+useCurrencyConversion(formFields, employeeAdvance, ["paid_amount"])
+
+// ---- approver / accountant auto-fetch ----
+async function setEmployeeAdvanceApprovers(employee_id) {
+	if (!employee_id) {
+		return
+	}
+
+	try {
+		const approverResource = createResource({
+			url: "frappe.client.get_value",
+			params: {
+				doctype: "Employee",
+				filters: { name: employee_id },
+				fieldname: ["custom_advance_approver", "custom_accountant"],
+			},
+		})
+
+		await approverResource.fetch()
+
+		const response = approverResource.data
+		const values = response?.message || response || {}
+
+		console.log("Employee Advance approver/accountant response:", values)
+
+		employeeAdvance.value.custom_advance_approver =
+			values.custom_advance_approver || ""
+
+		employeeAdvance.value.custom_accountant =
+			values.custom_accountant || ""
+	} catch (error) {
+		console.error(
+			"Failed to get Employee Advance approver/accountant:",
+			error
+		)
+	}
+}
+
+watch(
+	() => employee?.data?.name,
+	async (employee_id) => {
+		if (!employee_id) {
+			return
+		}
+
+		// only auto-set for a new request
+		if (!props.id) {
+			employeeAdvance.value.employee = employee_id
+			await setEmployeeAdvanceApprovers(employee_id)
+		}
+	},
+	{ immediate: true }
 )
+
+watch(
+	() => employeeAdvance.value.employee,
+	async (employee_id) => {
+		if (!employee_id) {
+			return
+		}
+
+		if (!props.id) {
+			await setEmployeeAdvanceApprovers(employee_id)
+		}
+	}
+)
+// ---- end approver / accountant auto-fetch ----
 
 // helper functions
 function getFilteredFields(fields) {
@@ -70,9 +132,7 @@ function getFilteredFields(fields) {
 		"more_info_section",
 		"pending_amount",
 	]
-
 	if (!props.id) excludeFields.push(...extraFields)
-
 	return fields.filter((field) => !excludeFields.includes(field.fieldname))
 }
 
@@ -80,7 +140,6 @@ function applyFilters(fields) {
 	return fields.map((field) => {
 		if (field.fieldname === "advance_account") {
 			if (!employeeAdvance.value.currency) return field
-
 			field.linkFilters = {
 				root_type: "Asset",
 				is_group: 0,
@@ -89,7 +148,6 @@ function applyFilters(fields) {
 				company: employeeAdvance.value.company,
 			}
 		}
-
 		return field
 	})
 }
@@ -101,5 +159,11 @@ watch(
 	}
 )
 
-function validateForm() {}
+function validateForm() {
+	employeeAdvance.value.employee = employee.data.name
+
+	if (!employeeAdvance.value.custom_advance_approver) {
+		setEmployeeAdvanceApprovers(employee.data.name)
+	}
+}
 </script>

@@ -13,13 +13,14 @@ from erpnext.accounts.doctype.journal_entry.journal_entry import get_default_ban
 
 import hrms
 from hrms.hr.utils import validate_active_employee
+from hrms.mixins.pwa_notifications import PWANotificationsMixin
 
 
 class EmployeeAdvanceOverPayment(frappe.ValidationError):
 	pass
 
 
-class EmployeeAdvance(Document):
+class EmployeeAdvance(PWANotificationsMixin, Document):
 	def validate(self):
 		validate_active_employee(self.employee)
 		self.validate_advance_account_currency()
@@ -64,8 +65,12 @@ class EmployeeAdvance(Document):
 		self.check_linked_payment_entry()
 		self.set_status(update=True)
 
+	def after_insert(self):
+		self.notify_approver()
+
 	def on_update(self):
 		self.publish_update()
+		self.notify_approval_status()
 
 	def after_delete(self):
 		self.publish_update()
