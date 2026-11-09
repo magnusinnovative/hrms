@@ -1,0 +1,87 @@
+{
+ "app": "hrms",
+ "creation": "2026-11-09 14:00:00",
+ "docstatus": 0,
+ "doctype": "Dock",
+ "idx": 0,
+ "items": [
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "hr",
+   "link_to": "HR Setup",
+   "link_type": "Workspace",
+   "title": "HR Setup"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "milestone",
+   "link_to": "Shift & Attendance",
+   "link_type": "Workspace",
+   "title": "Shift & Attendance"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "non-profit",
+   "link_to": "Leaves",
+   "link_type": "Workspace",
+   "title": "Leaves"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "expenses",
+   "link_to": "Expenses",
+   "link_type": "Workspace",
+   "title": "Expenses"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "accounting",
+   "link_to": "Payroll",
+   "link_type": "Workspace",
+   "title": "Payroll"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "star",
+   "link_to": "Performance",
+   "link_type": "Workspace",
+   "title": "Performance"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "customer",
+   "link_to": "Tenure",
+   "link_type": "Workspace",
+   "title": "Tenure"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "users",
+   "link_to": "Recruitment",
+   "link_type": "Workspace",
+   "title": "Recruitment"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "money-coins-1",
+   "link_to": "Tax & Benefits",
+   "link_type": "Workspace",
+   "title": "Tax & Benefits"
+  }
+ ],
+ "modified": "2026-11-09 14:00:00.000000",
+ "modified_by": "Administrator",
+ "name": "hrms",
+ "owner": "Administrator",
+ "standard": 1,
+ "user": ""
+}

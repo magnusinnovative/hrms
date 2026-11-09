@@ -4,7 +4,7 @@
 		size="sm"
 		v-model="value"
 		:placeholder="__('Select {0}', [__(doctype)])"
-		:options="options.data || []"
+		:options="optionsWithValue"
 		:class="disabled ? 'pointer-events-none' : ''"
 		:disabled="disabled"
 		@update:query="handleQueryUpdate"
@@ -73,6 +73,16 @@ const options = createResource({
 			}
 		})
 	},
+})
+
+// Autocomplete only displays a value that is present in `options`. A value set from code
+// (e.g. the approver fetched from the Employee) may not be in the first page of search
+// results, which made the field look empty. Always keep the current value as an option.
+const optionsWithValue = computed(() => {
+	const list = options.data || []
+	const current = props.modelValue
+	if (!current || list.some((o) => o.value === current)) return list
+	return [{ label: current, value: current }, ...list]
 })
 
 const reloadOptions = (searchTextVal) => {

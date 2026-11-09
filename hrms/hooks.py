@@ -1,5 +1,5 @@
 app_name = "hrms"
-app_title = "Frappe HR"
+app_title = "Magnus HR"
 app_publisher = "Frappe Technologies Pvt. Ltd."
 app_description = "Modern HR and Payroll Software"
 app_email = "contact@frappe.io"
@@ -7,14 +7,15 @@ app_license = "GNU General Public License (v3)"
 required_apps = ["frappe/erpnext"]
 source_link = "http://github.com/frappe/hrms"
 app_logo_url = "/assets/hrms/images/frappe-hr-logo.svg"
-app_home = "/desk/people"
+# "/desk/people" no longer exists (no "People" workspace); land on HR Setup instead.
+app_home = "/desk/hr-setup"
 
 add_to_apps_screen = [
 	{
 		"name": "hrms",
 		"logo": "/assets/hrms/images/frappe-hr-logo.svg",
-		"title": "Frappe HR",
-		"route": "/desk/people",
+		"title": app_title,
+		"route": app_home,
 		"has_permission": "hrms.hr.utils.check_app_permission",
 	}
 ]
